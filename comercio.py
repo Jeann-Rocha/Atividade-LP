@@ -50,7 +50,7 @@ class Inventario():
     def repor_produto(self, produto: Produto) -> None:
         """Função que repõe (aumenta a quantidade de) um produto no estoque.
         """
-
+ 
         self.produtos.append(produto)
 
     def listar_produtos(self) -> None:
