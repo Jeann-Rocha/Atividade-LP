@@ -50,7 +50,6 @@ class ExcecaoTransacaoRetorno(Exception):
         super().__init__(name + self.mensagem)
 
 
-
 class Inventario:
     produtos = [] # lista que conterá o estoque dos produtos disponíveis
     produtos_vendidos = [] # lista que conterá o conjunto de produtos vendidos
@@ -58,19 +57,20 @@ class Inventario:
     def vender_produto(self, produto: Produto) -> None:
         """Função que vende um produto do estoque, caso este exista.
         """
-        try:
+        if produto in self.produtos:
             self.produtos.remove(produto) # produto vendido
-        except ValueError:
-            raise ExcecaoTransacaoVenda(produto.name)
-        else:
             self.produtos_vendidos.append(produto)
             print(f"{produto.name} (código: {produto.codigo}) foi vendido por R$ {produto.preco:.2f}.")
+        else:
+            raise ExcecaoTransacaoVenda(produto.name)
+            
 
     def retornar_produto(self, produto: Produto) -> None:
         """Função que retorna um produto vendido para o estoque, caso este tenha sido vendido.
         """
         if produto in self.produtos_vendidos:
             self.produtos.append(produto) # produto retornado
+            self.produtos_vendidos.remove(produto)
             print(f"{produto.name} (código: {produto.codigo}) foi retornado (valor: R$ {produto.preco:.2f}).")
         else:
             raise ExcecaoTransacaoRetorno(produto.name)
@@ -89,20 +89,58 @@ class Inventario:
         print("## ESTOQUE DE PRODUTOS DISPONÍVEIS ##")
         print("="*37, "\n")
 
-        for produto in self.produtos:
+        for produto in set(self.produtos):
             print(f"- Há {self.produtos.count(produto)} {produto.name} no estoque (código: {produto.codigo}, preço: R$ {produto.preco:.2f}, tipo: {produto.tipo})")
 
+        print("\n")
 
-# exemplo [melhorar isso...]
-produto1 = Produto("PC DELL", 12345, 4500.00, Tipo_Produto.COMPUTADOR)
-produto2 = Produto("SANSUNG J2 PRIME", 10010, 1000.00, Tipo_Produto.CELULAR)
-produto3 = Produto("NOTEBOOK ACER", 11111, 2000.00, Tipo_Produto.NOTEBOOK)
-produto4 = Produto("YURE", 11111, 2000.0, Tipo_Produto.NOTEBOOK)
+# ----------------------------------------------------------------------------
 
+# exemplos (computadores)
+produto1 = Produto("PC DELL", 12345, 5999.90, Tipo_Produto.COMPUTADOR)
+produto2 = Produto("PC LENOVO", 55555, 1549.49, Tipo_Produto.COMPUTADOR)
+
+# exemplos (notebooks)
+produto3 = Produto("NOTEBOOK ACER", 10000, 3499.99, Tipo_Produto.NOTEBOOK)
+produto4 = Produto("NOTEBOOK POSITIVO", 22222, 3000.0, Tipo_Produto.NOTEBOOK)
+
+# exemplos (celulares)
+produto5 = Produto("CELULAR SANSUNG", 67676, 1000.00, Tipo_Produto.CELULAR)
+produto6 = Produto("CELULAR IPHONE", 10010, 5010.95, Tipo_Produto.CELULAR)
+produto7 = Produto("CELULAR MOTOROLA", 99999, 2999.39, Tipo_Produto.CELULAR)
+
+# repondo estoque
+Inventario().repor_produto(produto1)
+Inventario().repor_produto(produto1)
 Inventario().repor_produto(produto1)
 Inventario().repor_produto(produto2)
+Inventario().repor_produto(produto2)
 Inventario().repor_produto(produto3)
-Inventario().vender_produto(produto2)
-Inventario().vender_produto(produto1)
-Inventario().retornar_produto(produto1)
+Inventario().repor_produto(produto3)
+Inventario().repor_produto(produto4)
+Inventario().repor_produto(produto4)
+Inventario().repor_produto(produto5)
+Inventario().repor_produto(produto6)
+
+# listando produtos apos reposição de estoque
 Inventario().listar_produtos()
+
+# vendendo produtos
+Inventario().vender_produto(produto1)
+Inventario().vender_produto(produto1)
+Inventario().vender_produto(produto2)
+Inventario().vender_produto(produto2)
+Inventario().vender_produto(produto5)
+
+# listando produtos após vendas
+Inventario().listar_produtos()
+
+# retornando
+Inventario().retornar_produto(produto1)
+Inventario().retornar_produto(produto5)
+
+# listando produtos após retornos
+Inventario().listar_produtos()
+
+# exemplo de erro
+Inventario().vender_produto(produto7)
