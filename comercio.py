@@ -7,38 +7,36 @@ class Tipo_Produto(Enum):
 
 
 class Produto:
-    def __init__(self, produto: str, codigo: int, preco : float, tipo: Tipo_Produto) -> None:
-        self.produto = produto
+    def __init__(self, name: str, codigo: int, preco : float, tipo: Tipo_Produto) -> None:
+        self.name = name
         self.codigo = codigo
         self.preco = preco
         self.tipo = tipo
 
 
 class Celular(Produto):
-    def __init__(self, produto: str, codigo: int, preco: float, tipo: Tipo_Produto) -> None:
-        super().__init__(produto, codigo, preco, tipo)
+    def __init__(self, name: str, codigo: int, preco: float, tipo: Tipo_Produto) -> None:
+        super().__init__(name, codigo, preco, tipo)
 
 
 class Laptop(Produto):
-    def __init__(self, produto: str, codigo: int, preco: float, tipo: Tipo_Produto) -> None:
-        super().__init__(produto, codigo, preco, tipo)
+    def __init__(self, name: str, codigo: int, preco: float, tipo: Tipo_Produto) -> None:
+        super().__init__(name, codigo, preco, tipo)
 
 
 class Computador(Produto):
-    def __init__(self, produto: str, codigo: int, preco: float, tipo: Tipo_Produto) -> None:
-        super().__init__(produto, codigo, preco, tipo)
+    def __init__(self, name: str, codigo: int, preco: float, tipo: Tipo_Produto) -> None:
+        super().__init__(name, codigo, preco, tipo)
 
 
 class Inventario():
-    def __init__(self) -> None:
-        self.produtos = []
+    produtos = []
 
     def vender_produto(self, produto: Produto) -> None:
         """Função que vende um produto do estoque, caso este exista.
         """
         try:
             self.produtos.remove(produto)
-
         except KeyError:
             print(f"{produto} não consta no estoque!")
 
@@ -56,7 +54,26 @@ class Inventario():
     def listar_produtos(self) -> None:
         """Função que lista o estoque de produtos disponíveis.
         """
-        pass
+        print("="*37)
+        print("## ESTOQUE DE PRODUTOS DISPONÍVEIS ##")
+        print("="*37, "\n")
+
+        for p in self.produtos:
+            print(f"- Há {self.produtos.count(p)} {p.name} no estoque (código: {p.codigo}, preço: {p.preco})")
+
+
+# exemplo
+produto1 = Produto("PC DELL", 12345, 4500.00, Tipo_Produto.COMPUTADOR)
+produto2 = Produto("SANSUNG J2 PRIME", 10010, 1000.00, Tipo_Produto.CELULAR)
+produto3 = Produto("NOTEBOOK ACER", 11111, 2000.0, Tipo_Produto.NOTEBOOK)
+produto4 = Produto("YURE", 11111, 2000.0, Tipo_Produto.NOTEBOOK)
+
+Inventario().repor_produto(produto1)
+Inventario().repor_produto(produto2)
+Inventario().repor_produto(produto3)
+Inventario().vender_produto(produto4)
+Inventario().listar_produtos()
+
 
     
 
