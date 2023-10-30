@@ -36,7 +36,11 @@ class Inventario():
     def vender_produto(self, produto: Produto) -> None:
         """Função que vende um produto do estoque, caso este exista.
         """
-        pass
+        try:
+            self.produtos.remove(produto)
+
+        except KeyError:
+            print(f"{produto} não consta no estoque!")
 
     def retornar_produto(self, produto: Produto) -> None:
         """Função que retorna um produto vendido para o estoque, caso este tenha sido vendido.
@@ -46,7 +50,8 @@ class Inventario():
     def repor_produto(self, produto: Produto) -> None:
         """Função que repõe (aumenta a quantidade de) um produto no estoque.
         """
-        pass
+
+        self.produtos.append(produto)
 
     def listar_produtos(self) -> None:
         """Função que lista o estoque de produtos disponíveis.
