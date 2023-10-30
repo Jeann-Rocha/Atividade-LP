@@ -71,13 +71,13 @@ class Inventario:
         print("="*37, "\n")
 
         for produto in self.produtos:
-            print(f"- Há {self.produtos.count(produto)} {produto.name} no estoque (código: {produto.codigo}, preço: {produto.preco})")
+            print(f"- Há {self.produtos.count(produto)} {produto.name} no estoque (código: {produto.codigo}, preço: R$ {produto.preco:.2f}, tipo: {produto.tipo})")
 
 
 # exemplo [melhorar isso...]
 produto1 = Produto("PC DELL", 12345, 4500.00, Tipo_Produto.COMPUTADOR)
 produto2 = Produto("SANSUNG J2 PRIME", 10010, 1000.00, Tipo_Produto.CELULAR)
-produto3 = Produto("NOTEBOOK ACER", 11111, 2000.0, Tipo_Produto.NOTEBOOK)
+produto3 = Produto("NOTEBOOK ACER", 11111, 2000.00, Tipo_Produto.NOTEBOOK)
 produto4 = Produto("YURE", 11111, 2000.0, Tipo_Produto.NOTEBOOK)
 
 Inventario().repor_produto(produto1)
