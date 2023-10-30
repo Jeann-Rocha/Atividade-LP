@@ -143,4 +143,5 @@ Inventario().retornar_produto(produto5)
 Inventario().listar_produtos()
 
 # exemplo de erro
-Inventario().vender_produto(produto7)
+Inventario().vender_produto(produto7) # o produto7 não está no estoque
+Inventario().retornar_produto(produto4) # o produto4 não foi vendido (não irá funcionar porque a linha anterior já gera uma exceção)
