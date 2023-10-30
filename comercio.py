@@ -7,7 +7,7 @@ class Tipo_Produto(Enum):
 
 
 class Produto:
-    def __init__(self, name: str, codigo: int, preco : float, tipo: Tipo_Produto) -> None:
+    def _init_(self, name: str, codigo: int, preco : float, tipo: Tipo_Produto) -> None:
         self.name = name
         self.codigo = codigo
         self.preco = preco
@@ -16,20 +16,39 @@ class Produto:
 
 # produto tipo 1
 class Celular(Produto):
-    def __init__(self, name: str, codigo: int, preco: float, tipo: Tipo_Produto) -> None:
-        super().__init__(name, codigo, preco, tipo)
+    def _init_(self, name: str, codigo: int, preco: float, tipo: Tipo_Produto) -> None:
+        super()._init_(name, codigo, preco, tipo)
 
 
 # produto tipo 2
 class Laptop(Produto):
-    def __init__(self, name: str, codigo: int, preco: float, tipo: Tipo_Produto) -> None:
-        super().__init__(name, codigo, preco, tipo)
+    def _init_(self, name: str, codigo: int, preco: float, tipo: Tipo_Produto) -> None:
+        super()._init_(name, codigo, preco, tipo)
 
 
 # produto tipo 3
 class Computador(Produto):
-    def __init__(self, name: str, codigo: int, preco: float, tipo: Tipo_Produto) -> None:
-        super().__init__(name, codigo, preco, tipo)
+    def _init_(self, name: str, codigo: int, preco: float, tipo: Tipo_Produto) -> None:
+        super()._init_(name, codigo, preco, tipo)
+
+
+class ExcecaoTransacaoVenda(Exception):
+    """Exceção para vendas de produtos que não constam no estoque.
+    """
+    mensagem = " não consta no estoque!"
+
+    def _init_(self, name: str) -> None:
+        super()._init_(name + self.mensagem)
+
+
+class ExcecaoTransacaoRetorno(Exception):
+    """Exceção para retorno de produtos que não foram vendidos.
+    """
+    mensagem = " não foi vendido!"
+
+    def _init_(self, name: str) -> None:
+        super()._init_(name + self.mensagem)
+
 
 
 class Inventario:
@@ -42,20 +61,17 @@ class Inventario:
         try:
             self.produtos.remove(produto) # produto vendido
         except ValueError:
-            print(f"{produto.name} não consta no estoque!")
+            raise ExcecaoTransacaoVenda(produto.name)
         else:
             self.produtos_vendidos.append(produto)
 
     def retornar_produto(self, produto: Produto) -> None:
         """Função que retorna um produto vendido para o estoque, caso este tenha sido vendido.
         """
-        try:
-            if produto in self.produtos_vendidos:
-                self.produtos.append(produto) # produto retornado
-            else:
-                raise ValueError()
-        except ValueError:
-            print(f"{produto.name} não foi vendido!")
+        if produto in self.produtos_vendidos:
+            self.produtos.append(produto) # produto retornado
+        else:
+            raise ExcecaoTransacaoRetorno(produto.name)
 
     def repor_produto(self, produto: Produto) -> None:
         """Função que repõe (aumenta a quantidade de) um produto no estoque.
@@ -87,8 +103,3 @@ Inventario().vender_produto(produto2)
 Inventario().vender_produto(produto1)
 Inventario().retornar_produto(produto3)
 Inventario().listar_produtos()
-
-
-    
-
-
